@@ -1,0 +1,137 @@
+{
+  "api_contract": {
+    "ruta": "/api/clientes",
+    "metodo": "GET",
+    "descripcion": "Obtiene la lista de todos los clientes.",
+    "parametros_entrada": {},
+    "respuesta_esperada": {
+      "clientes": [
+        {
+          "id": "integer",
+          "nombre_completo": "string",
+          "empresa": "string",
+          "email": "string",
+          "telefono": "string",
+          "fecha_registro": "string (ISO 8601)",
+          "status": "string ('Activo', 'Inactivo', 'Potencial')"
+        }
+      ]
+    }
+  },
+  {
+    "ruta": "/api/clientes",
+    "metodo": "POST",
+    "descripcion": "Crea un nuevo cliente.",
+    "parametros_entrada": {
+      "nombre_completo": "string",
+      "empresa": "string (opcional)",
+      "email": "string",
+      "telefono": "string (opcional)",
+      "status": "string ('Activo', 'Inactivo', 'Potencial')"
+    },
+    "respuesta_esperada": {
+      "id": "integer",
+      "nombre_completo": "string",
+      "empresa": "string",
+      "email": "string",
+      "telefono": "string",
+      "fecha_registro": "string (ISO 8601)",
+      "status": "string ('Activo', 'Inactivo', 'Potencial')"
+    }
+  },
+  {
+    "ruta": "/api/clientes/<int:id>",
+    "metodo": "PUT",
+    "descripcion": "Actualiza la información de un cliente existente.",
+    "parametros_entrada": {
+      "nombre_completo": "string (opcional)",
+      "empresa": "string (opcional)",
+      "email": "string (opcional)",
+      "telefono": "string (opcional)",
+      "status": "string ('Activo', 'Inactivo', 'Potencial') (opcional)"
+    },
+    "respuesta_esperada": {
+      "id": "integer",
+      "nombre_completo": "string",
+      "empresa": "string",
+      "email": "string",
+      "telefono": "string",
+      "fecha_registro": "string (ISO 8601)",
+      "status": "string ('Activo', 'Inactivo', 'Potencial')"
+    }
+  },
+  {
+    "ruta": "/api/clientes/<int:id>",
+    "metodo": "DELETE",
+    "descripcion": "Elimina un cliente.",
+    "parametros_entrada": {},
+    "respuesta_esperada": {
+      "mensaje": "string"
+    }
+  }
+},
+  "contrato_qa_e2e": {
+    "tabla_clientes": "clientes-table",
+    "boton_agregar_cliente": "btn-add-client",
+    "input_busqueda_nombre_empresa": "search-input",
+    "modal_formulario_cliente": "client-modal",
+    "campo_nombre_completo": "input-fullname",
+    "campo_empresa": "input-company",
+    "campo_email": "input-email",
+    "campo_telefono": "input-phone",
+    "select_status": "select-status",
+    "boton_guardar_cliente": "btn-save-client",
+    "fila_cliente": "client-row-",
+    "boton_editar": "btn-edit-",
+    "boton_eliminar": "btn-delete-"
+  },
+  "plan": [
+    {
+      "etapa": "backend",
+      "tareas": [
+        "Crear la estructura de carpetas del proyecto Flask con backend/ e incluir __init__.py, models.py, routes.py y app.py.",
+        "Definir el modelo Cliente en models.py usando Flask-SQLAlchemy con los campos especificados.",
+        "Configurar la conexión a SQLite 'clientes.db' en la aplicación factory create_app.",
+        "Implementar los endpoints GET, POST, PUT y DELETE en routes.py utilizando Blueprints de Flask.",
+        "Añadir validación de datos de entrada con marshmallow o manualmente para asegurar tipos y restricciones.",
+        "Crear un archivo requirements.txt que incluya Flask, Flask-SQLAlchemy, marshmallow (si se usa) y pytest.",
+        "Escribir pruebas unitarias en tests/test_backend.py usando el test client de Flask para cada endpoint.",
+        "Añadir configuración de logging y manejo de errores globales dentro del factory.",
+        "Incluir un script manage.py que permita ejecutar migraciones o inicializar la base de datos.",
+        "Documentar la API en un README.md con ejemplos de peticiones curl.",
+        "Agregar un archivo .env para variables de entorno y asegurar su carga segura.",
+        "Crear una carpeta docs/ con documentación técnica generada automáticamente por Sphinx o similar.",
+        "Implementar tests de integración en backend-qa utilizando pytest y coverage.",
+        "Actualizar el Dockerfile para construir la imagen del backend con los requisitos instalados.",
+        "Configurar flake8 y black para formato y linting automático.",
+        "Crear un script de inicialización que cree la tabla Clientes si no existe al iniciar la app.",
+        "Incluir una ruta /healthcheck que devuelva 200 OK para verificaciones externas.",
+        "Implementar autenticación básica opcional usando Flask-Login (solo si se requiere)."]
+    },
+    {
+      "etapa": "frontend",
+      "tareas": [
+        "Crear el archivo frontend/index.html con la estructura base HTML5, enlaces a CSS y JS inline.",
+        "Incluir una tabla con id 'clientes-table' que mostrará los clientes recuperados vía fetch GET /api/clientes.",
+        "Agregar un botón con id 'btn-add-client' para abrir el modal de formulario.",
+        "Implementar el modal con campos de entrada y select para status, usando data-testid según contrato_qa_e2e.",
+        "Añadir lógica JavaScript para manejar la creación, edición y eliminación de clientes mediante POST, PUT y DELETE.",
+        "Incorporar una barra de búsqueda con input id 'search-input' que filtre filas de la tabla en tiempo real.",
+        "Agregar botones 'Editar' y 'Eliminar' en cada fila con identificadores basados en el id del cliente.",
+        "Implementar funciones de actualización del DOM para reflejar cambios sin recargar página.",
+        "Incluir manejo de errores HTTP mostrando mensajes al usuario.",
+        "Añadir estilos CSS básicos para la tabla y modal, manteniendo diseño responsive.",
+        "Crear pruebas unitarias frontend usando Jest o similar (si se requiere) para funciones JS clave.",
+        "Documentar el flujo de interacción en un README.md dentro del directorio frontend."]
+    },
+    {
+      "etapa": "e2e",
+      "tareas": [
+        "Crear la carpeta cypress/e2e y un archivo test.cy.js que abra la aplicación, busque un cliente por nombre o empresa, añada uno nuevo, edite el mismo y lo elimine.",
+        "Utilizar los data-testid definidos en contrato_qa_e2e para seleccionar elementos en las pruebas.",
+        "Configurar Cypress con baseUrl apuntando al servidor backend local.",
+        "Incluir aserciones que verifiquen la correcta actualización de la tabla tras cada operación.",
+        "Agregar scripts npm para ejecutar las pruebas e integrarlas en el pipeline CI."]
+    }
+  ]
+}
