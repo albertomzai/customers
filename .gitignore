@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+env/
+venv/
+clientes.db
+.env
+tests/__pycache__/
