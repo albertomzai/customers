@@ -1,137 +1,89 @@
 {
   "api_contract": {
     "ruta": "/api/clientes",
-    "metodo": "GET",
-    "descripcion": "Obtiene la lista de todos los clientes.",
-    "parametros_entrada": {},
-    "respuesta_esperada": {
-      "clientes": [
-        {
-          "id": "integer",
-          "nombre_completo": "string",
-          "empresa": "string",
-          "email": "string",
-          "telefono": "string",
-          "fecha_registro": "string (ISO 8601)",
-          "status": "string ('Activo', 'Inactivo', 'Potencial')"
-        }
-      ]
-    }
-  },
-  {
-    "ruta": "/api/clientes",
-    "metodo": "POST",
-    "descripcion": "Crea un nuevo cliente.",
-    "parametros_entrada": {
+    "metodo": "GET, POST",
+    "descripcion": "Obtiene la lista de clientes o crea un nuevo cliente.",
+    "parametros_entrada_post": {
       "nombre_completo": "string",
       "empresa": "string (opcional)",
       "email": "string",
       "telefono": "string (opcional)",
       "status": "string ('Activo', 'Inactivo', 'Potencial')"
     },
-    "respuesta_esperada": {
-      "id": "integer",
-      "nombre_completo": "string",
-      "empresa": "string",
-      "email": "string",
-      "telefono": "string",
-      "fecha_registro": "string (ISO 8601)",
-      "status": "string ('Activo', 'Inactivo', 'Potencial')"
-    }
-  },
-  {
-    "ruta": "/api/clientes/<int:id>",
-    "metodo": "PUT",
-    "descripcion": "Actualiza la información de un cliente existente.",
-    "parametros_entrada": {
-      "nombre_completo": "string (opcional)",
-      "empresa": "string (opcional)",
-      "email": "string (opcional)",
-      "telefono": "string (opcional)",
-      "status": "string ('Activo', 'Inactivo', 'Potencial') (opcional)"
+    "parametros_entrada_put_delete": {
+      "id": "integer"
     },
-    "respuesta_esperada": {
+    "respuesta_get": [
+      {
+        "id": "integer",
+        "nombre_completo": "string",
+        "empresa": "string",
+        "email": "string",
+        "telefono": "string",
+        "fecha_registro": "string (ISO 8601)",
+        "status": "string"
+      }
+    ],
+    "respuesta_post_put": {
       "id": "integer",
       "nombre_completo": "string",
       "empresa": "string",
       "email": "string",
       "telefono": "string",
       "fecha_registro": "string (ISO 8601)",
-      "status": "string ('Activo', 'Inactivo', 'Potencial')"
+      "status": "string"
     }
   },
-  {
-    "ruta": "/api/clientes/<int:id>",
-    "metodo": "DELETE",
-    "descripcion": "Elimina un cliente.",
-    "parametros_entrada": {},
-    "respuesta_esperada": {
-      "mensaje": "string"
-    }
-  }
-},
   "contrato_qa_e2e": {
-    "tabla_clientes": "clientes-table",
-    "boton_agregar_cliente": "btn-add-client",
-    "input_busqueda_nombre_empresa": "search-input",
-    "modal_formulario_cliente": "client-modal",
-    "campo_nombre_completo": "input-fullname",
-    "campo_empresa": "input-company",
-    "campo_email": "input-email",
-    "campo_telefono": "input-phone",
+    "tabla_clientes": "table-clients",
+    "btn_agregar_cliente": "btn-add-client",
+    "modal_formulario": "client-form-modal",
+    "input_nombre_completo": "input-fullname",
+    "input_empresa": "input-company",
+    "input_email": "input-email",
+    "input_telefono": "input-phone",
     "select_status": "select-status",
-    "boton_guardar_cliente": "btn-save-client",
-    "fila_cliente": "client-row-",
-    "boton_editar": "btn-edit-",
-    "boton_eliminar": "btn-delete-"
+    "btn_guardar_cliente": "btn-save-client",
+    "btn_editar_cliente": "btn-edit-client",
+    "btn_eliminar_cliente": "btn-delete-client",
+    "campo_busqueda": "search-input"
   },
   "plan": [
     {
       "etapa": "backend",
       "tareas": [
-        "Crear la estructura de carpetas del proyecto Flask con backend/ e incluir __init__.py, models.py, routes.py y app.py.",
-        "Definir el modelo Cliente en models.py usando Flask-SQLAlchemy con los campos especificados.",
-        "Configurar la conexión a SQLite 'clientes.db' en la aplicación factory create_app.",
-        "Implementar los endpoints GET, POST, PUT y DELETE en routes.py utilizando Blueprints de Flask.",
-        "Añadir validación de datos de entrada con marshmallow o manualmente para asegurar tipos y restricciones.",
-        "Crear un archivo requirements.txt que incluya Flask, Flask-SQLAlchemy, marshmallow (si se usa) y pytest.",
-        "Escribir pruebas unitarias en tests/test_backend.py usando el test client de Flask para cada endpoint.",
-        "Añadir configuración de logging y manejo de errores globales dentro del factory.",
-        "Incluir un script manage.py que permita ejecutar migraciones o inicializar la base de datos.",
-        "Documentar la API en un README.md con ejemplos de peticiones curl.",
-        "Agregar un archivo .env para variables de entorno y asegurar su carga segura.",
-        "Crear una carpeta docs/ con documentación técnica generada automáticamente por Sphinx o similar.",
-        "Implementar tests de integración en backend-qa utilizando pytest y coverage.",
-        "Actualizar el Dockerfile para construir la imagen del backend con los requisitos instalados.",
-        "Configurar flake8 y black para formato y linting automático.",
-        "Crear un script de inicialización que cree la tabla Clientes si no existe al iniciar la app.",
-        "Incluir una ruta /healthcheck que devuelva 200 OK para verificaciones externas.",
-        "Implementar autenticación básica opcional usando Flask-Login (solo si se requiere)."]
+        "Crear un proyecto Flask con la estructura de directorios básica para el backend.",
+        "Instalar y configurar Flask-SQLAlchemy para usar SQLite como base de datos.",
+        "Definir el modelo 'Cliente' según el esquema proporcionado en el contexto.",
+        "Implementar los endpoints RESTful: GET /api/clientes, POST /api/clientes, PUT /api/clientes/<id>, DELETE /api/clientes/<id> usando Blueprints.",
+        "Agregar validación de entrada y manejo de errores para cada endpoint.",
+        "Crear el fichero `requirements.txt` con las dependencias 'Flask', 'Flask-SQLAlchemy' y 'pytest'.",
+        "Crear un fichero `pytest.ini` en la raíz con la configuración básica.",
+        "Definir la fábrica de aplicación `create_app` dentro del paquete `backend/__init__.py`.",
+        "Configurar la aplicación para servir archivos estáticos desde la ruta relativa '../frontend'.",
+        "Incluir el archivo `app.py` en la raíz que importe y ejecute la aplicación desde `backend`. ",
+        "Crear una carpeta `tests/` con un fichero `test_backend.py` que contenga pruebas unitarias para cada endpoint usando el cliente de prueba de Flask.",
+        "Agregar un `.gitignore` que excluya carpetas como `__pycache__/`, archivos temporales y la base de datos SQLite."
+      ]
     },
     {
       "etapa": "frontend",
       "tareas": [
-        "Crear el archivo frontend/index.html con la estructura base HTML5, enlaces a CSS y JS inline.",
-        "Incluir una tabla con id 'clientes-table' que mostrará los clientes recuperados vía fetch GET /api/clientes.",
-        "Agregar un botón con id 'btn-add-client' para abrir el modal de formulario.",
-        "Implementar el modal con campos de entrada y select para status, usando data-testid según contrato_qa_e2e.",
-        "Añadir lógica JavaScript para manejar la creación, edición y eliminación de clientes mediante POST, PUT y DELETE.",
-        "Incorporar una barra de búsqueda con input id 'search-input' que filtre filas de la tabla en tiempo real.",
-        "Agregar botones 'Editar' y 'Eliminar' en cada fila con identificadores basados en el id del cliente.",
-        "Implementar funciones de actualización del DOM para reflejar cambios sin recargar página.",
-        "Incluir manejo de errores HTTP mostrando mensajes al usuario.",
-        "Añadir estilos CSS básicos para la tabla y modal, manteniendo diseño responsive.",
-        "Crear pruebas unitarias frontend usando Jest o similar (si se requiere) para funciones JS clave.",
-        "Documentar el flujo de interacción en un README.md dentro del directorio frontend."]
+        "Crear el archivo 'frontend/index.html' con una tabla para mostrar los clientes.",
+        "Incluir un botón 'Añadir Nuevo Cliente' que abra un modal con un formulario.",
+        "Implementar botones de 'Editar' y 'Eliminar' en cada fila de la tabla.",
+        "Agregar un campo de búsqueda que filtre la tabla por nombre o empresa.",
+        "Escribir JavaScript ES6 dentro del mismo archivo HTML para interactuar con los endpoints RESTful.",
+        "Gestionar el estado de la tabla actualizando dinámicamente tras operaciones CRUD.",
+        "Aplicar estilos básicos en CSS interno para una presentación limpia."
+      ]
     },
     {
       "etapa": "e2e",
       "tareas": [
-        "Crear la carpeta cypress/e2e y un archivo test.cy.js que abra la aplicación, busque un cliente por nombre o empresa, añada uno nuevo, edite el mismo y lo elimine.",
-        "Utilizar los data-testid definidos en contrato_qa_e2e para seleccionar elementos en las pruebas.",
-        "Configurar Cypress con baseUrl apuntando al servidor backend local.",
-        "Incluir aserciones que verifiquen la correcta actualización de la tabla tras cada operación.",
-        "Agregar scripts npm para ejecutar las pruebas e integrarlas en el pipeline CI."]
+        "Crear un fichero de prueba End-to-End (`cypress/e2e/crm.cy.js`) que verifique la carga inicial de clientes, la creación, edición y eliminación de un cliente, así como el filtrado por búsqueda.",
+        "Configurar Cypress para apuntar al servidor Flask en desarrollo."
+      ]
     }
   ]
 }
