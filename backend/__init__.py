@@ -1,49 +1,31 @@
-"""Backend package for the CRM application."""
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# Initialize extensions
+# Instancia de la base de datos, se inicializará en create_app
 db = SQLAlchemy()
 
-def create_app(test_config=None):
-    """Create and configure a new Flask application instance.
-
-    Args:
-        test_config (dict, optional): Configuration dictionary for testing.
-    Returns:
-        flask.Flask: The configured Flask application.
-    """
-
+def create_app():
+    """Factory function to create and configure the Flask app."""
     app = Flask(__name__, static_folder='../frontend', static_url_path='')
 
-    # Default configuration
-    app.config.from_mapping(
-        SQLALCHEMY_DATABASE_URI='sqlite:///clientes.db',
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    )
+    # Configuración de la base de datos SQLite
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clientes.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    if test_config:
-        app.config.update(test_config)
-
-    # Initialize extensions with the app
+    # Inicializar extensiones
     db.init_app(app)
 
-    # Register blueprints
+    # Registrar blueprints
     from .routes import clientes_bp
-    app.register_blueprint(clientes_bp, url_prefix='/api/clientes')
+    app.register_blueprint(clientes_bp, url_prefix='/api')
 
-    # Create database tables on first request
-    @app.before_first_request
-    def create_tables():
-        db.create_all()
-
-    # Root route to serve the frontend index.html
     @app.route('/')
-    def root():
+    def index():
+        """Serve the frontend entry point."""
         return app.send_static_file('index.html')
 
-    return app
+    # Crear tablas si no existen
+    with app.app_context():
+        db.create_all()
 
-# Create a global app instance for import by tests and run.py
-app = create_app()
+    return app

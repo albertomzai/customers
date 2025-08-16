@@ -1,7 +1,5 @@
 __pycache__/
 *.pyc
-env/
-venv/
+.DS_Store
 clientes.db
-.env
-tests/__pycache__/
+env/
